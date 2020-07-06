@@ -1,16 +1,12 @@
 {
-  "name": "@sunbrightness/vue-waterfall-photo",
-  "version": "1.0.0",
+  "name": "vue-waterfall-photo",
+  "version": "1.0.1",
   "description": "",
   "main": "./src/VueWaterfallPhoto.vue",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SUNbrightness/vue-waterfall-photo.git"
+    "url": "https://github.com/SUNbrightness/vue-waterfall-photo.git"
   },
   "author": "Ysunbrightness <1913599913@qq.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SUNbrightness/vue-waterfall-photo/issues"
-  },
-  "homepage": "https://github.com/SUNbrightness/vue-waterfall-photo#readme"
+  "license": "MIT"
 }
