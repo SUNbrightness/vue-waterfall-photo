@@ -1,10 +1,10 @@
 <template>
   <div class="vue-waterfall-photo">
-    <template v-for="(pitem, pindex) in colList">
-      <div :style="vueWaterfallPhotoItem" class="vue-waterfall-photo-image-container">
-        <template v-for="item in pitem">
+    <template v-for="(pitem, pindex) in colList" >
+      <div :id="'vue-waterfall-photo-item'+ pindex"  :style="vueWaterfallPhotoItem" class="vue-waterfall-photo-image-container" :key="'vue-waterfall-photo-item'+ pindex" >
+        <template v-for="item in pitem" >
           <slot :item="item">
-            <img :src="item.src"></img>
+            <img :src="item.src" :key="item[dataKey.id]"></img>
           </slot>
         </template>
       </div>
@@ -20,11 +20,11 @@
   .vue-waterfall-photo{
       display: -webkit-flex;
         display: flex;
+        align-items:flex-start;
   }
 
   .vue-waterfall-photo-item {
-    max-width: 30%;
-    float: left;
+    max-width: 33%;
     overflow: hidden !important;
   }
 </style>
@@ -43,6 +43,7 @@
           return {
             height:'height',
             width:'width',
+            id:'id'
           }
         }
       },
@@ -68,7 +69,7 @@
     computed: {
       vueWaterfallPhotoItem: function() {
         return {
-          'max-width': this.itemWidth,
+          'width': this.itemWidth,
           float: 'left',
           overflow: 'hidden',
            margin: this.lineGap+"%"
@@ -76,6 +77,13 @@
       },
       itemWidth:function(){
         return 1 / this.grow  *100 +"%";
+      },
+      //item的真实宽度
+      itemTrueWidth:function(){
+        //减去0.5边距
+        let countWidth= document.body.scrollWidth-(document.body.scrollWidth* 0.005 *this.grow*2);
+        let width = countWidth / this.grow;
+        return width;
       }
     },
     methods: {
@@ -83,8 +91,10 @@
         var mixIndex = this.getMixIndex();
         this.colList[mixIndex].push(item);
 
-        var heightPercent = item[this.dataKey.height] / item[this.dataKey.width];
+        // var heightPercent = this.$refs['vue-waterfall-photo-item'+ mixIndex].offsetHeight;
+        var ele = document.getElementById('vue-waterfall-photo-item'+ mixIndex);
 
+        var heightPercent = item[this.dataKey.height] * ( this.itemTrueWidth / item[this.dataKey.width] );
         this.colBottomHeight[mixIndex] = this.colBottomHeight[mixIndex] + heightPercent;
       },
       joinItem(list) {
@@ -103,14 +113,15 @@
         this.joinItem(this.initList);
       },
       getMixIndex() {
-        var mixIndex = 0;
-        var mixNum = this.colBottomHeight[0];
-        for (var i = 1; i < this.colBottomHeight.length; i++) {
+        var mixIndex = this.colBottomHeight.length-1;
+        var mixNum = this.colBottomHeight[this.colBottomHeight.length-1];
+        for (var i = this.colBottomHeight.length-2; i >=0; i--) {
           if (this.colBottomHeight[i] <= mixNum) {
             mixNum = this.colBottomHeight[i];
             mixIndex = i;
           }
         }
+        console.log(this.colBottomHeight)
 
         return mixIndex;
       }

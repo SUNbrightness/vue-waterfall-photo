@@ -92,7 +92,7 @@ required|Attribute|type| default |explain
 true|initList|Array|[]|初始值
 flase|lineGap|Number <100 |1|图片间隔距离
 flase|grow|Number|2|列数
-flase|dataKey|Object|{height:'height',width:'width',}|属性映射
+flase|dataKey|Object|{height:'height',width:'width',id:'id'}|属性映射
 
 ## methods
 method|explain
